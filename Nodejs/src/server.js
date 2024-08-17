@@ -1,17 +1,27 @@
+require('dotenv').config()
+
 const express = require('express')
-const path = require('path')
+const webRoutes = require('./route/web')
+const configviewEngine = require('./config/viewEngine')
 
 const app = express()
-const port = 8069
-const hostname = 'localhost'
-//config template engine
-// app.set('views', './src/views/')
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs')
+const port = process.env.PORT || 8888
+const hostname = process.env.HOSTNAME
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+
+app.use('/', webRoutes)
+configviewEngine(app)
+
+
+const db = require("./models");
+
+db.sequelize.sync()
+    .then(() => {
+        console.log("Synced database.");
+    })
+    .catch((err) => {
+        console.log("Failed to sync database: " + err.message);
+    });
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
