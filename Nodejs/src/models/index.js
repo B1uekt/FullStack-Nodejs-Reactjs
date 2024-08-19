@@ -24,7 +24,7 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.p
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
   },
-  logging: true
+  logging: false
 });
 
 
