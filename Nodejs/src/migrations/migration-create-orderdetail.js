@@ -9,7 +9,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            orderId: {
+            OrderId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: 'Orders', // tên bảng là 'types'

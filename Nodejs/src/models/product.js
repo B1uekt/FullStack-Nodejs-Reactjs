@@ -2,6 +2,7 @@
 const {
     Model
 } = require('sequelize');
+const Type = require('./type.js');
 module.exports = (sequelize, DataTypes) => {
     class Product extends Model {
         /**
@@ -14,11 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Product.init({
-        id: DataTypes.INTEGER,
         name: DataTypes.STRING,
         price: DataTypes.DECIMAL(10, 3),
-        is_discount: BOOLEAN,
-        discount_percent: DECIMAL(5, 1),
+        is_discount: DataTypes.BOOLEAN,
+        discount_percent: DataTypes.DECIMAL(5, 1),
         image: DataTypes.BLOB,
         thumbnail_1: DataTypes.BLOB,
         thumbnail_2: DataTypes.BLOB,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         typeId: {
             type: DataTypes.INTEGER,
             references: {
-                model: type,
+                model: Type,
                 key: 'id'
             }
         }

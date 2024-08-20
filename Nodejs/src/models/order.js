@@ -2,6 +2,7 @@
 const {
     Model
 } = require('sequelize');
+const User = require('./user');
 module.exports = (sequelize, DataTypes) => {
     class Order extends Model {
         /**
@@ -14,19 +15,19 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Order.init({
-        id: DataTypes.INTEGER,
-        userId: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: user,
-                key: 'id'
-            }
-        },
+        userId: DataTypes.INTEGER,
         order_date: DataTypes.DATE,
         total_amount: DataTypes.DECIMAL(10, 3),
         total_quantity: DataTypes.INTEGER,
         status: DataTypes.STRING,
         delivery_date: DataTypes.DATE,
+        userId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: User,
+                key: 'id'
+            }
+        }
     }, {
         sequelize,
         modelName: 'Order',

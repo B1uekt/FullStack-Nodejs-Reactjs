@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         quantity: DataTypes.INTEGER,
+        price: DataTypes.DECIMAL(10, 3),
 
     }, {
         sequelize,

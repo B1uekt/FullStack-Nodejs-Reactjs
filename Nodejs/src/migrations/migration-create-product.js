@@ -1,5 +1,6 @@
 'use strict';
 const { DataTypes } = require('sequelize');
+
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('Products', {
@@ -39,7 +40,7 @@ module.exports = {
             typeId: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: 'Types', // tên bảng là 'types'
+                    model: 'Types',
                     key: 'id'
                 },
                 onUpdate: 'CASCADE',
