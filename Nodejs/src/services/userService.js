@@ -11,6 +11,7 @@ const createUser = async (firstName, lastName, email, password) => {
             lastName: lastName,
             email: email,
             password: hashPassword,
+            role: 'USER',
         })
         return result;
     } catch (error) {
