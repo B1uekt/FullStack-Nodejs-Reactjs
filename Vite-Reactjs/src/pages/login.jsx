@@ -2,51 +2,46 @@ import React from 'react';
 import { Button, Form, Input, notification, Breadcrumb } from 'antd';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import '../styles/register.scss'
-import { postRegister } from '../services/AuthServices';
+import { postLogin, postRegister } from '../services/AuthServices';
+import { useNavigate } from 'react-router-dom';
 
-const RegisterPage = () => {
+const LoginPage = () => {
+    const navigate = useNavigate()
     const onFinish = async (values) => {
-        const { firstName, lastName, email, password } = values;
-        const res = await postRegister(firstName, lastName, email, password)
-        if (res) {
+        const { email, password } = values;
+        const res = await postLogin(email, password)
+        console.log(res)
+        if (res && res.EC === 0) {
             notification.success({
-                message: "Create User succeed!",
+                message: "Login succeed!",
                 description: "Success"
             })
-            navigate('/login')
+            navigate('/')
         }
-        else {
+        if (res && res.EC !== 0) {
             notification.success({
-                message: "Create User fail",
-                description: "error"
+                message: "Login Fail!",
+                description: res?.EM ?? "error"
             })
         }
+
     };
     return (
         <>
             <Breadcrumb className='container'
                 items={[
                     {
-                        href: '',
+                        href: '/',
                         title: <HomeOutlined />,
                     },
                     {
-                        href: '',
-                        title: (
-                            <>
-                                <UserOutlined />
-                                <span>Application List</span>
-                            </>
-                        ),
-                    },
-                    {
-                        title: 'Application',
+                        title: 'Login',
                     },
                 ]}
             />
             <div className='register-container'>
                 <div className='welcome'>
-                    REGISTER
+                    LOGIN
                 </div>
                 <div className='register-content'>
                     <Form
@@ -68,30 +63,7 @@ const RegisterPage = () => {
                         autoComplete="off"
                         layout='vertical'
                     >
-                        <Form.Item
-                            label="First Name"
-                            name="firstName"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your First Name!',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item
-                            label="Last Name"
-                            name="lastName"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your Last Name',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
+
                         <Form.Item
                             label="Email"
                             name="email"
@@ -123,7 +95,7 @@ const RegisterPage = () => {
                         <Form.Item className='btn-create'
                         >
                             <Button className='btn-create' type="primary" htmlType="submit">
-                                Submit
+                                Login
                             </Button>
                         </Form.Item>
                     </Form>
@@ -135,4 +107,4 @@ const RegisterPage = () => {
 
 }
 
-export default RegisterPage
+export default LoginPage

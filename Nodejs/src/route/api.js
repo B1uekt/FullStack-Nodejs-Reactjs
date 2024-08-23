@@ -1,5 +1,5 @@
 const express = require('express')
-const { CreateUser } = require('../controllers/userController')
+const { CreateUser, handleLogin } = require('../controllers/userController')
 
 const routerAPI = express.Router()
 
@@ -8,4 +8,5 @@ routerAPI.get("/", (req, res) => {
 })
 
 routerAPI.post("/register", CreateUser)
+routerAPI.post("/login", handleLogin)
 module.exports = routerAPI

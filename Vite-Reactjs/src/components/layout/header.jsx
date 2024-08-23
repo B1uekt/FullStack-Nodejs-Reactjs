@@ -55,7 +55,7 @@ const Header = () => {
                                 items: [
                                     {
                                         key: 'account',
-                                        label: `LOG IN`,
+                                        label: <Link to="/login">LOG IN</Link>,
                                     },
                                     {
                                         key: 'cart',
