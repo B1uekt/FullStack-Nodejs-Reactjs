@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-import { Menu, Row, Col } from 'antd';
+import { DownOutlined, ShoppingCartOutlined, SearchOutlined } from '@ant-design/icons';
+import { Menu, Row, Col, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import '../../styles/header.scss'
 import LogoHeader from '../../assets/images/logo.png'
@@ -8,32 +8,33 @@ import LogoHeader from '../../assets/images/logo.png'
 const Header = () => {
     const items = [
         {
-            label: <Link to="/">HomePage</Link>,
-            key: 'mail',
-            icon: <MailOutlined />,
+            label: <Link to="/">HOME</Link>,
+            key: 'home',
+
         },
         {
-            label: <Link to="/user">User</Link>,
+            label: <Link to="/user">USER</Link>,
             key: 'user',
-            icon: <MailOutlined />,
         },
         {
-            label: 'Welcome',
-            key: 'SubMenu',
-            icon: <SettingOutlined />,
-            children: [
-                {
-                    label: 'Login',
-                    key: 'Login',
-                },
-                {
-                    label: 'Logout',
-                    key: 'Logout',
-                },
-            ],
+            label: <Link to="/user">ALL ABOUT TOYS</Link>,
+            key: 'toy',
         },
+        {
+            label: <Link to="/user">ACCESSORIES</Link>,
+            key: 'accessories',
+        },
+        {
+            label: <Link to="/user">ABOUT US</Link>,
+            key: 'about',
+        },
+        {
+            label: <Link to="/user">CONTACT US</Link>,
+            key: 'contact',
+        },
+
     ];
-    const [current, setCurrent] = useState('mail');
+    const [current, setCurrent] = useState('home');
     const onClick = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
@@ -43,17 +44,41 @@ const Header = () => {
             <div className='top-header'>
                 <Row style={{ height: '100%' }}>
                     <Col className='left-header' span={8}>
-                        <span>HOTLINE: 0123 456 789</span>
+                        <span style={{ color: 'black' }}>HOTLINE: 0123 456 789</span>
                     </Col>
                     <Col className='logo-header' span={8}>
                         <img src={LogoHeader}></img>
                     </Col>
                     <Col className='right-header' span={8}>
-                        <span>ABC</span>
+                        <Dropdown className='spn-account'
+                            menu={{
+                                items: [
+                                    {
+                                        key: 'account',
+                                        label: `LOG IN`,
+                                    },
+                                    {
+                                        key: 'cart',
+                                        label: <Link to="/register">SIGN UP</Link>,
+                                    },
+                                ],
+                            }}
+                        >
+                            <a href="#" className="ant-dropdown-link">
+                                ACCOUNT <DownOutlined />
+                            </a>
+                        </Dropdown>
+                        <div className='cart'>
+                            <span className='spn-cart'> <ShoppingCartOutlined /></span>
+                            <span className='number'>3</span>
+                        </div>
+
+                        <span><SearchOutlined /></span>
                     </Col>
                 </Row>
+
             </div>
-            <div>
+            <div className='menu-header'>
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
             </div>
         </>

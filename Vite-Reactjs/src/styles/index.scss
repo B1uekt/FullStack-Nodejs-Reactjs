@@ -3,3 +3,29 @@
     padding: 0;
 
 }
+
+.container {
+    margin: 0 5vw;
+    /* Khoảng cách 5% chiều rộng của viewport */
+    padding: 0 24px;
+}
+
+span:hover {
+    color: #1677ff
+}
+
+@font-face {
+    font-family: 'SVN-Gotham Bold';
+
+    src: url('../../public/font/SVN-Gotham Bold.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SVN-Gotham Light';
+
+    src: url('../../public/font/SVN-Gotham Light.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
