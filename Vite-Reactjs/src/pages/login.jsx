@@ -1,17 +1,21 @@
 import React from 'react';
 import { Button, Form, Input, notification, Breadcrumb } from 'antd';
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
 import '../styles/register.scss'
-import { postLogin, postRegister } from '../services/AuthServices';
+import { postLogin } from '../services/AuthServices';
+import { doLogin } from '../redux/action/userAction';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const onFinish = async (values) => {
         const { email, password } = values;
         const res = await postLogin(email, password)
         console.log(res)
         if (res && res.EC === 0) {
+            dispatch(doLogin(res))
             notification.success({
                 message: "Login succeed!",
                 description: "Success"

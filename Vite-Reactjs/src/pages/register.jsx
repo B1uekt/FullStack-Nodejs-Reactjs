@@ -9,6 +9,7 @@ const RegisterPage = () => {
         const { firstName, lastName, email, password } = values;
         const res = await postRegister(firstName, lastName, email, password)
         if (res) {
+
             notification.success({
                 message: "Create User succeed!",
                 description: "Success"

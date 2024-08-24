@@ -4,8 +4,9 @@ import { Menu, Row, Col, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import '../../styles/header.scss'
 import LogoHeader from '../../assets/images/logo.png'
-
+import { useDispatch, useSelector } from 'react-redux'
 const Header = () => {
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated)
     const items = [
         {
             label: <Link to="/">HOME</Link>,
@@ -51,7 +52,18 @@ const Header = () => {
                     </Col>
                     <Col className='right-header' span={8}>
                         <Dropdown className='spn-account'
-                            menu={{
+                            menu={isAuthenticated ? {
+                                items: [
+                                    {
+                                        key: 'profile',
+                                        label: <Link to="/profile">PROFILE</Link>,
+                                    },
+                                    {
+                                        key: 'logout',
+                                        label: <Link to="/register">LOG OUT</Link>,
+                                    },
+                                ],
+                            } : {
                                 items: [
                                     {
                                         key: 'account',
@@ -77,7 +89,7 @@ const Header = () => {
                     </Col>
                 </Row>
 
-            </div>
+            </div >
             <div className='menu-header'>
                 <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
             </div>
