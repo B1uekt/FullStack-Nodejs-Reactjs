@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { notification, Space, Table, Tag } from 'antd';
 import fetchListUser from '../services/UserServices';
 const { Column } = Table;
 
@@ -9,8 +9,15 @@ const UserPage = () => {
     useEffect(() => {
         const fetchUSer = async () => {
             const res = await fetchListUser()
-            if (res) {
+            if (!res?.message) {
                 setDataUser(res)
+            }
+            else {
+
+                notification.error({
+                    message: "Unauthorized",
+                    description: res.message
+                })
             }
         }
         fetchUSer()

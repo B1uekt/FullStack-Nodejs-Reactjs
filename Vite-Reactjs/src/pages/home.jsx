@@ -21,16 +21,13 @@ const HomePage = () => {
             autoplay={{ delay: 2000, disableOnInteraction: false, stopOnLastSlide: true }}
         >
             <SwiperSlide>
-                <img src={slider1} alt="Slide 1" />
+                <img src={slider3} alt="Slide 1" />
             </SwiperSlide>
             <SwiperSlide>
                 <img src={slider2} alt="Slide 2" />
             </SwiperSlide>
             <SwiperSlide>
-                <img src={slider3} alt="Slide 3" />
-            </SwiperSlide>
-            <SwiperSlide>
-                <img src={slider1} alt="Slide 4" />
+                <img src={slider1} alt="Slide 3" />
             </SwiperSlide>
         </Swiper>
     )
