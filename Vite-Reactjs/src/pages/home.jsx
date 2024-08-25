@@ -33,7 +33,7 @@ const HomePage = () => {
                 <img src={slider1} alt="Slide 4" />
             </SwiperSlide>
         </Swiper>
-    );
+    )
 }
 
 export default HomePage;

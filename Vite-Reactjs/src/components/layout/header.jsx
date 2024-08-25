@@ -6,6 +6,7 @@ import '../../styles/header.scss'
 import LogoHeader from '../../assets/images/logo.png'
 import { useDispatch, useSelector } from 'react-redux'
 const Header = () => {
+    const dispatch = useDispatch()
     const isAuthenticated = useSelector(state => state.user.isAuthenticated)
     const items = [
         {
@@ -13,10 +14,12 @@ const Header = () => {
             key: 'home',
 
         },
-        {
-            label: <Link to="/user">USER</Link>,
-            key: 'user',
-        },
+        isAuthenticated ? (
+            {
+                label: <Link to="/user">USER</Link>,
+                key: 'user',
+            }
+        ) : null,
         {
             label: <Link to="/user">ALL ABOUT TOYS</Link>,
             key: 'toy',
@@ -40,6 +43,10 @@ const Header = () => {
         console.log('click ', e);
         setCurrent(e.key);
     };
+
+    const handleLogOut = () => {
+        // dispatch(doLogout())
+    }
     return (
         <>
             <div className='top-header'>
@@ -60,7 +67,8 @@ const Header = () => {
                                     },
                                     {
                                         key: 'logout',
-                                        label: <Link to="/register">LOG OUT</Link>,
+                                        label: 'LOG OUT',
+                                        onClick: () => handleLogOut()
                                     },
                                 ],
                             } : {

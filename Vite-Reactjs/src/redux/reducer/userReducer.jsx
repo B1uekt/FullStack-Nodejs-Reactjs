@@ -31,11 +31,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 account: {
                     access_token: '',
-                    refresh_token: '',
+                    address: '',
                     email: '',
-                    username: '',
-                    image: '',
+                    firstName: '',
+                    lastName: '',
                     role: '',
+                    phone: '',
                 },
                 isAuthenticated: false
             };

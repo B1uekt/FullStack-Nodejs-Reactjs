@@ -52,7 +52,7 @@ createRoot(document.getElementById('root')).render(
     <PersistGate loading={null} persistor={persistor}>
       <StrictMode>
         <RouterProvider router={router} />
-      </StrictMode>,
+      </StrictMode>
     </PersistGate>
   </Provider>
 )

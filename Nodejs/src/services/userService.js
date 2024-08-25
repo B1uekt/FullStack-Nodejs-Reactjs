@@ -21,6 +21,7 @@ const createUser = async (firstName, lastName, email, password) => {
         return null;
     }
 }
+
 const loginService = async (email, password) => {
     try {
         const user = await db.User.findOne({
@@ -76,4 +77,16 @@ const loginService = async (email, password) => {
         return null;
     }
 }
-module.exports = { createUser, loginService }
+
+const getUserService = async () => {
+    try {
+        let result = await db.User.findAll({
+            attributes: ['id', 'email', 'firstName', 'lastName', 'phone', 'address', 'role', 'gender'],
+        })
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+module.exports = { createUser, loginService, getUserService }
