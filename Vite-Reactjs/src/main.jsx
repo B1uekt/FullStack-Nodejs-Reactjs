@@ -13,6 +13,7 @@ import RegisterPage from './pages/register.jsx';
 import UserPage from './pages/user.jsx';
 import HomePage from './pages/home.jsx';
 import LoginPage from './pages/login.jsx';
+import NotFound from './pages/notfound.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       },
     ]
   },
+  {
+    path: "*",
+    element: <NotFound />
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(

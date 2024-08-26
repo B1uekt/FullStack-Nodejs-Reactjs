@@ -1,5 +1,6 @@
 import axios from "axios"
 import { store } from "../redux/store";
+
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL
 });
@@ -26,7 +27,10 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log(">>>>check error", error.response.data)
+    console.log(">>>>check error", error.response.status)
+    if (error.response.status === 401) {
+
+    }
     return error && error.response && error.response.data
         ? error.response.data : Promise.reject(error);
 });

@@ -33,7 +33,7 @@ const loginService = async (email, password) => {
             const isMatchPassword = await bcrypt.compare(password, user.password);
             if (!isMatchPassword) {
                 return {
-                    EC: 2,
+                    EC: 1,
                     EM: "Emai/Password không hợp lệ"
                 }
             }
@@ -42,6 +42,7 @@ const loginService = async (email, password) => {
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    role: user.role
 
                 }
                 const access_token = jwt.sign(

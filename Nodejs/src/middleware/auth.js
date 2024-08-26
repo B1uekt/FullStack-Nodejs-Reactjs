@@ -13,7 +13,8 @@ const auth = (req, res, next) => {
 
             try {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET)
-                console.log(decoded)
+                console.log(decoded.role)
+                req.data = decoded
                 next()
             } catch (error) {
                 return res.status(401).json({
@@ -30,4 +31,13 @@ const auth = (req, res, next) => {
     }
 
 }
-module.exports = { auth }
+
+const checkRole = (req, res, next) => {
+    if (req.data.role === 'USER') {
+        return res.status(401).json({
+            message: "NOT PERMISSTION"
+        })
+    }
+    next()
+}
+module.exports = { auth, checkRole }

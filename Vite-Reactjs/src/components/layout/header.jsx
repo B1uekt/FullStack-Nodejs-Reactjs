@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { DownOutlined, ShoppingCartOutlined, SearchOutlined } from '@ant-design/icons';
-import { Menu, Row, Col, Dropdown } from 'antd';
-import { Link } from 'react-router-dom';
+import { Menu, Row, Col, Dropdown, notification } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/header.scss'
 import LogoHeader from '../../assets/images/logo.png'
 import { useDispatch, useSelector } from 'react-redux'
+import { doLogout } from '../../redux/action/userAction';
 const Header = () => {
     const dispatch = useDispatch()
     const isAuthenticated = useSelector(state => state.user.isAuthenticated)
+    const account = useSelector(state => state.user.account)
+    const navigate = useNavigate()
     const items = [
         {
             label: <Link to="/">HOME</Link>,
             key: 'home',
 
         },
-        isAuthenticated ? (
+        (isAuthenticated && account.role === 'ADMIN') ? (
             {
                 label: <Link to="/user">USER</Link>,
                 key: 'user',
@@ -45,7 +48,12 @@ const Header = () => {
     };
 
     const handleLogOut = () => {
-        // dispatch(doLogout())
+        dispatch(doLogout())
+        notification.success({
+            message: "Logout succeed!",
+            description: "Success"
+        })
+        navigate('/')
     }
     return (
         <>
