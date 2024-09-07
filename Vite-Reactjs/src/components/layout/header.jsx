@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { DownOutlined, ShoppingCartOutlined, SearchOutlined } from '@ant-design/icons';
 import { Menu, Row, Col, Dropdown, notification } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import '../../styles/header.scss'
 import LogoHeader from '../../assets/images/logo.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { doLogout } from '../../redux/action/userAction';
+import '../../styles/header.scss'
 const Header = () => {
     const dispatch = useDispatch()
     const isAuthenticated = useSelector(state => state.user.isAuthenticated)
@@ -19,24 +19,24 @@ const Header = () => {
         },
         (isAuthenticated && account.role === 'ADMIN') ? (
             {
-                label: <Link to="/user">USER</Link>,
+                label: <Link to="/admin">ADMIN</Link>,
                 key: 'user',
             }
         ) : null,
         {
-            label: <Link to="/user">ALL ABOUT TOYS</Link>,
+            label: <Link to="/about-toys">ALL ABOUT TOYS</Link>,
             key: 'toy',
         },
         {
-            label: <Link to="/user">ACCESSORIES</Link>,
+            label: <Link to="/accessories">ACCESSORIES</Link>,
             key: 'accessories',
         },
         {
-            label: <Link to="/user">ABOUT US</Link>,
+            label: <Link to="/about-us">ABOUT US</Link>,
             key: 'about',
         },
         {
-            label: <Link to="/user">CONTACT US</Link>,
+            label: <Link to="/contact">CONTACT US</Link>,
             key: 'contact',
         },
 

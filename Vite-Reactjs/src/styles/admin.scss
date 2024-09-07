@@ -1,0 +1,33 @@
+.menu-sidebar {
+
+    .ant-menu-item {
+        &.ant-menu-item-selected {
+            background-color: rgb(78, 65, 174);
+
+            span:hover {
+                color: white;
+            }
+
+            :hover {
+                color: white;
+            }
+
+        }
+    }
+}
+
+.demo-logo-vertical {
+    text-align: center;
+    margin: 24px;
+
+    h2 {
+        color: #ccc
+    }
+
+
+}
+
+.admin-content {
+    height: 80%;
+    padding: 12px;
+}

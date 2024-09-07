@@ -24,7 +24,7 @@ const UserPage = () => {
     }, [])
 
     return (
-        <Table className='container' dataSource={dataListUser} rowKey={(record) => `user_${record.id}`}>
+        <Table dataSource={dataListUser} rowKey={(record) => `user_${record.id}`}>
             <Column title="Email" dataIndex="email" key="email" />
             <Column title="First Name" dataIndex="firstName" key="firstName" />
             <Column title="Last Name" dataIndex="lastName" key="lastName" />

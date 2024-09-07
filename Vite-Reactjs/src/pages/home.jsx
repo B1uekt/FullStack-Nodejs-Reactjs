@@ -18,7 +18,7 @@ const HomePage = () => {
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
-            autoplay={{ delay: 2000, disableOnInteraction: false, stopOnLastSlide: true }}
+            autoplay={{ delay: 2000, disableOnInteraction: false, stopOnLastSlide: false }}
         >
             <SwiperSlide>
                 <img src={slider3} alt="Slide 1" />

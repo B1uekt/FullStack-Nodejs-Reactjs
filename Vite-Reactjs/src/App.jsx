@@ -1,4 +1,5 @@
 
+import Footer from './components/layout/footer';
 import Header from './components/layout/header'
 import { Outlet } from "react-router-dom";
 function App() {
@@ -11,6 +12,9 @@ function App() {
       </div>
       <div>
         <Outlet />
+      </div>
+      <div className='container footer'>
+        <Footer />
       </div>
     </div>
   )

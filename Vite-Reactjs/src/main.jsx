@@ -14,6 +14,7 @@ import UserPage from './pages/user.jsx';
 import HomePage from './pages/home.jsx';
 import LoginPage from './pages/login.jsx';
 import NotFound from './pages/notfound.jsx';
+import AdminPage from './pages/admin.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,12 +27,7 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />
       },
-      {
-        path: "user",
-        element: (
-          <UserPage />
-        ),
-      },
+
       {
         path: "register",
         element: (
@@ -49,7 +45,21 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />
-  }
+  },
+  {
+    path: "admin",
+    element: (
+      <AdminPage />
+    ),
+    children: [
+      {
+        path: "user",
+        element: (
+          <UserPage />
+        ),
+      },
+    ]
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(
