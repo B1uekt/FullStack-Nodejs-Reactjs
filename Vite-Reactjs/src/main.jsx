@@ -8,13 +8,15 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import App from './App.jsx'
-import './styles/index.scss'
 import RegisterPage from './pages/register.jsx';
-import UserPage from './pages/user.jsx';
+import UserPage from './components/Admin/user.jsx';
 import HomePage from './pages/home.jsx';
 import LoginPage from './pages/login.jsx';
 import NotFound from './pages/notfound.jsx';
 import AdminPage from './pages/admin.jsx';
+import Product from './components/Admin/product.jsx';
+import './styles/index.scss'
+
 
 const router = createBrowserRouter([
   {
@@ -56,6 +58,12 @@ const router = createBrowserRouter([
         path: "user",
         element: (
           <UserPage />
+        ),
+      },
+      {
+        path: "product",
+        element: (
+          <Product />
         ),
       },
     ]

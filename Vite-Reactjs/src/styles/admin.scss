@@ -21,7 +21,11 @@
     margin: 24px;
 
     h2 {
-        color: #ccc
+        color: #ccc;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
 

@@ -1,0 +1,29 @@
+.ant-modal {
+    &.modal-add {
+        width: 750px !important;
+
+        .ant-modal-content {
+            width: 800px;
+
+            .ant-modal-body {
+
+
+                .ant-form {
+                    margin: 24px 0 12px 0;
+
+                    max-width: 800px !important;
+
+                    .ant-form-item {
+
+                        &.btn-create {
+                            display: flex;
+                            justify-content: flex-end;
+                            margin-top: 36px;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}

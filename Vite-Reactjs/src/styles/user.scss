@@ -1,0 +1,33 @@
+.btn-add-new {
+    border: 1px solid #001529;
+    width: 80px;
+    height: 40px;
+    margin-bottom: 12px;
+    padding: 12px 0;
+    border-radius: 5px;
+    background-color: #002446;
+    color: white;
+    text-align: center;
+
+    span {
+        margin-right: 5px;
+
+        svg {
+            color: rgb(32, 222, 32);
+            width: 12px;
+
+        }
+
+    }
+
+    &:hover {
+        background-color: #ccc;
+        transition: all 0.4s ease;
+        color: #001529;
+        border-color: #ccc;
+    }
+}
+
+.modal-add {
+    width: 150px;
+}

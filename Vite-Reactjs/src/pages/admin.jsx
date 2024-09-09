@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Button } from 'antd';
-import { UserOutlined, VideoCameraOutlined, UploadOutlined, MenuUnfoldOutlined, MenuFoldOutlined, FundFilled, ToolFilled } from '@ant-design/icons';
+import { UserOutlined, ProductOutlined, UploadOutlined, MenuUnfoldOutlined, MenuFoldOutlined, FundFilled, ToolFilled } from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
 import '../styles/admin.scss'
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 const AdminPage = () => {
     const [collapsed, setCollapsed] = useState(false);
-
+    const navigate = useNavigate()
     const items = [
         {
             key: '1',
@@ -22,12 +22,12 @@ const AdminPage = () => {
                 {
                     key: '3',
                     icon: <UserOutlined />,
-                    label: <Link to="user">USER</Link>,
+                    label: <Link to="user">User</Link>,
                 },
                 {
                     key: '4',
-                    icon: <VideoCameraOutlined />,
-                    label: 'Application',
+                    icon: <ProductOutlined />,
+                    label: <Link to="product">Product</Link>
                 }
             ]
         },
@@ -46,7 +46,7 @@ const AdminPage = () => {
                 collapsed={collapsed}
                 onCollapse={(value) => setCollapsed(value)}>
                 <div className="demo-logo-vertical">
-                    <h2>{collapsed ? 'Ad' : 'Admin'}</h2>
+                    <h2 onClick={() => navigate('/')}>{collapsed ? 'Ad' : 'Admin'}</h2>
                 </div>
                 <Menu className="menu-sidebar" theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
             </Sider>
