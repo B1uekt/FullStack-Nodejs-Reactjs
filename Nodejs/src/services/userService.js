@@ -90,4 +90,25 @@ const getUserService = async () => {
         return null;
     }
 }
-module.exports = { createUser, loginService, getUserService }
+
+const addNewUser = async (firstName, lastName, email, password, role, phone, address) => {
+    try {
+        const hashPassword = await bcrypt.hash(password, saltRounds)
+
+        let result = await db.User.create({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: hashPassword,
+            role: role,
+            phone: phone,
+            address: address,
+        })
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+module.exports = { createUser, loginService, getUserService, addNewUser }

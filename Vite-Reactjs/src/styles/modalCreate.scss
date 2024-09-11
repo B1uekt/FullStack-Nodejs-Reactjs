@@ -16,9 +16,40 @@
                     .ant-form-item {
 
                         &.btn-create {
-                            display: flex;
-                            justify-content: flex-end;
                             margin-top: 36px;
+
+                            .ant-row {
+                                width: 100%;
+                                display: flex;
+                                justify-content: flex-end;
+
+                                .ant-form-item-control-input-content {
+                                    display: flex;
+                                    justify-content: flex-end;
+
+                                    button.btn-create {
+                                        width: 100px;
+                                        margin-left: 15px;
+                                        background-color: #001529;
+
+                                        &:hover {
+                                            background-color: #ccc;
+                                            transition: all 0.6s ease;
+                                            color: #001529;
+                                            border-color: #ccc;
+
+                                            span {
+                                                &:hover {
+                                                    color: #001529;
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+
                         }
                     }
                 }

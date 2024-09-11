@@ -3,8 +3,10 @@ import { Button, Form, Input, notification, Breadcrumb } from 'antd';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import '../styles/register.scss'
 import { postRegister } from '../services/AuthServices';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
+    const navigate = useNavigate()
     const onFinish = async (values) => {
         const { firstName, lastName, email, password } = values;
         const res = await postRegister(firstName, lastName, email, password)

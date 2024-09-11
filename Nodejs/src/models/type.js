@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         sequelize,
         modelName: 'Type',
+        paranoid: true,
+        timestamps: true
     });
     return Type;
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { notification, Space, Table, Tag, Modal } from 'antd';
-import fetchListUser from '../../services/UserServices';
+import { fetchListUser } from '../../services/UserServices';
 import ModalCreateUser from './Modal/ModalCreateUser';
 import { PlusCircleFilled } from '@ant-design/icons';
 import '../../styles/user.scss'
@@ -10,22 +10,22 @@ const UserPage = () => {
     const [dataListUser, setDataUser] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchUSer = async () => {
-            const res = await fetchListUser()
-            if (!res?.message) {
-                setDataUser(res)
-            }
-            else {
-
-                notification.error({
-                    message: "Unauthorized",
-                    description: res.message
-                })
-            }
+    const fetchListUSer = async () => {
+        const res = await fetchListUser();
+        if (!res?.message) {
+            setDataUser(res);
+        } else {
+            notification.error({
+                message: 'Unauthorized',
+                description: res.message,
+            });
         }
-        fetchUSer()
-    }, [])
+    };
+
+    // Gọi fetchUSer khi component mount lần đầu tiên
+    useEffect(() => {
+        fetchListUSer();
+    }, []);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -38,6 +38,7 @@ const UserPage = () => {
             <ModalCreateUser
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
+                fetchListUSer={fetchListUSer}
             />
             <Table dataSource={dataListUser} rowKey={(record) => `user_${record.id}`}>
                 <Column title="Email" dataIndex="email" key="email" />

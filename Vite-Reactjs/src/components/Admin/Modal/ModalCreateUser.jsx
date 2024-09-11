@@ -1,13 +1,22 @@
 import { Modal, Form, Input, notification, Row, Col, Select, Button } from 'antd';
 import '../../../styles/modalCreate.scss'
+import { postCreateUser } from '../../../services/UserServices';
 const ModalCreateUser = (props) => {
-    const { isModalOpen, setIsModalOpen } = props
+    const { isModalOpen, setIsModalOpen, fetchListUSer } = props
+    const [form] = Form.useForm();
     const onFinish = async (values) => {
         const { email, password, firstName, lastName, role, phone, address } = values;
-        console.log(email, password, firstName, lastName, role, phone, address)
+
+        const res = await postCreateUser(firstName, lastName, email, password, role, phone, address)
+        console.log(res)
+        fetchListUSer()
+        setIsModalOpen(false);
+        form.resetFields();
+
     };
     const handleCancel = () => {
         setIsModalOpen(false);
+        form.resetFields();
     };
 
     return (
@@ -21,6 +30,7 @@ const ModalCreateUser = (props) => {
             closable={true}
         >
             <Form
+                form={form}
                 name="basic"
                 onFinish={onFinish}
                 labelCol={{
@@ -48,6 +58,10 @@ const ModalCreateUser = (props) => {
                                     required: true,
                                     message: 'Please input your email!',
                                 },
+                                {
+                                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                                    message: 'Invalid email format!'
+                                }
                             ]}
                             labelCol={{
                                 span: 24,
@@ -104,7 +118,7 @@ const ModalCreateUser = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input.Password />
+                            <Input />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -117,6 +131,12 @@ const ModalCreateUser = (props) => {
                             wrapperCol={{
                                 span: 24,
                             }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please select a role!',
+                                },
+                            ]}
                         >
                             <Select>
                                 <Select.Option value="ADMIN">ADMIN</Select.Option>
@@ -133,6 +153,10 @@ const ModalCreateUser = (props) => {
                                     required: true,
                                     message: 'Please input your phone!',
                                 },
+                                {
+                                    pattern: /^(0|\+84)(3|5|7|8|9)\d{8}$/,
+                                    message: 'Invalid phone format!'
+                                }
                             ]}
                             labelCol={{
                                 span: 24,
@@ -167,9 +191,13 @@ const ModalCreateUser = (props) => {
                 </Row>
                 <Form.Item className='btn-create'
                 >
-                    <Button className='btn-create' type="primary" htmlType="submit">
-                        Login
+                    <Button onClick={handleCancel} className='btn-create' type="primary">
+                        Cancel
                     </Button>
+                    <Button className='btn-create' type="primary" htmlType="submit">
+                        Save
+                    </Button>
+
                 </Form.Item>
             </Form>
         </Modal>
