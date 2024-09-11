@@ -28,6 +28,29 @@
     }
 }
 
+.ant-table-wrapper {
+    padding: 12px;
+    height: 360px;
+
+    .ant-spin-nested-loading {
+        height: 100%;
+
+        .ant-spin-container {
+            height: 100%;
+
+            .ant-table {
+                height: 100%;
+            }
+
+            .ant-pagination {
+                justify-content: center;
+            }
+        }
+
+    }
+
+}
+
 .modal-add {
     width: 150px;
 }

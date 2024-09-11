@@ -40,7 +40,7 @@ const UserPage = () => {
                 setIsModalOpen={setIsModalOpen}
                 fetchListUSer={fetchListUSer}
             />
-            <Table dataSource={dataListUser} rowKey={(record) => `user_${record.id}`}>
+            <Table pagination={{ defaultCurrent: 1, pageSize: 5, align: "center" }} dataSource={dataListUser} rowKey={(record) => `user_${record.id}`}>
                 <Column title="Email" dataIndex="email" key="email" />
                 <Column title="First Name" dataIndex="firstName" key="firstName" />
                 <Column title="Last Name" dataIndex="lastName" key="lastName" />

@@ -104,10 +104,18 @@ const addNewUser = async (firstName, lastName, email, password, role, phone, add
             phone: phone,
             address: address,
         })
-        return result;
+        return {
+            result,
+            EC: 0,
+            EM: "New user created successfully"
+        };
+
     } catch (error) {
         console.log(error);
-        return null;
+        return {
+            EC: 1,
+            EM: "Cannot create new user"
+        };
     }
 }
 

@@ -14,5 +14,5 @@ routerAPI.get("/", (req, res) => {
 routerAPI.get("/user", checkRole, getUser);
 routerAPI.post("/register", CreateUser)
 routerAPI.post("/login", handleLogin)
-routerAPI.post("/createUser", postAddNewUser)
+routerAPI.post("/createUser", checkRole, postAddNewUser)
 module.exports = routerAPI
