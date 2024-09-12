@@ -9,7 +9,10 @@ const postCreateUser = (firstName, lastName, email, password, role, phone, addre
 }
 
 const deleteUser = (userId) => {
-    console.log(userId)
     return axios.delete("v1/api/deleteUser", { data: { userId: userId } })
 }
-export { fetchListUser, postCreateUser, deleteUser }
+
+const putUpdateUser = (id, firstName, lastName, role, phone, address) => {
+    return axios.put("v1/api/updateUser", { id, firstName, lastName, role, phone, address })
+}
+export { fetchListUser, postCreateUser, deleteUser, putUpdateUser }

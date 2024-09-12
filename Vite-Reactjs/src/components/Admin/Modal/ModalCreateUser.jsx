@@ -1,30 +1,80 @@
 import { Modal, Form, Input, notification, Row, Col, Select, Button } from 'antd';
 import '../../../styles/modalCreate.scss'
-import { postCreateUser } from '../../../services/UserServices';
+import { postCreateUser, putUpdateUser } from '../../../services/UserServices';
+import { useEffect } from 'react';
+import _ from 'lodash'
 const ModalCreateUser = (props) => {
-    const { isModalOpen, setIsModalOpen, fetchListUSer } = props
-    const [form] = Form.useForm();
-    const onFinish = async (values) => {
-        const { email, password, firstName, lastName, role, phone, address } = values;
+    const { isModalOpen, setIsModalOpen, fetchListUSer, dataUpdate, setDataUpdate } = props
 
-        const res = await postCreateUser(firstName, lastName, email, password, role, phone, address)
-        if (res && res.EC === 0) {
-            notification.success({
-                message: "Success",
-                description: res.EM
-            })
-            fetchListUSer()
-            setIsModalOpen(false);
-            form.resetFields();
+    const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (dataUpdate && dataUpdate.email) {
+            form.setFieldsValue({
+                email: dataUpdate.email,
+                firstName: dataUpdate.firstName,
+                lastName: dataUpdate.lastName,
+                role: dataUpdate.role,
+                phone: dataUpdate.phone,
+                address: dataUpdate.address,
+            });
+        }
+    }, [dataUpdate]);
+
+    const onFinish = async (values) => {
+        const { firstName, lastName, role, phone, address } = values;
+        if (dataUpdate && !_.isEmpty(dataUpdate)) {
+            const res = await putUpdateUser(dataUpdate.id, firstName, lastName, role, phone, address)
+            if (res && res.EC === 0) {
+                notification.success({
+                    message: "Success",
+                    description: res.EM
+                })
+                fetchListUSer()
+                setIsModalOpen(false);
+                setDataUpdate({})
+                form.setFieldsValue({
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    role: '',
+                    phone: '',
+                    address: '',
+                });
+            }
+            else {
+                notification.error({
+                    message: "Error",
+                    description: res.EM
+                })
+            }
         }
         else {
-            notification.error({
-                message: "Error",
-                description: res.EM
-            })
+            const res = await postCreateUser(firstName, lastName, email, password, role, phone, address)
+            if (res && res.EC === 0) {
+                notification.success({
+                    message: "Success",
+                    description: res.EM
+                })
+                fetchListUSer()
+                setIsModalOpen(false);
+                form.resetFields();
+            }
+            else {
+                notification.error({
+                    message: "Error",
+                    description: res.EM
+                })
+            }
         }
+
+
+
     };
     const handleCancel = () => {
+        if (dataUpdate && !_.isEmpty(dataUpdate)) {
+            setDataUpdate({})
+        }
         setIsModalOpen(false);
         form.resetFields();
     };
@@ -83,26 +133,30 @@ const ModalCreateUser = (props) => {
                             <Input />
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your password!',
-                                },
-                            ]}
-                            labelCol={{
-                                span: 24,
-                            }}
-                            wrapperCol={{
-                                span: 24,
-                            }}
-                        >
-                            <Input.Password />
-                        </Form.Item>
-                    </Col>
+                    {
+                        dataUpdate && !_.isEmpty(dataUpdate) ? '' :
+                            <Col span={12}>
+                                <Form.Item
+                                    label="Password"
+                                    name="password"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your password!',
+                                        },
+                                    ]}
+                                    labelCol={{
+                                        span: 24,
+                                    }}
+                                    wrapperCol={{
+                                        span: 24,
+                                    }}
+                                >
+                                    <Input.Password />
+                                </Form.Item>
+                            </Col>
+                    }
+
                     <Col span={12}>
                         <Form.Item
                             label="First Name"

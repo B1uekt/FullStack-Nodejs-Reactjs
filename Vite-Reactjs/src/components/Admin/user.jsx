@@ -12,6 +12,7 @@ const UserPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false)
     const [dataDelete, setDataDelete] = useState({})
+    const [dataUpdate, setDataUpdate] = useState({})
     const fetchListUSer = async () => {
         const res = await fetchListUser();
         if (!res?.message) {
@@ -37,6 +38,11 @@ const UserPage = () => {
         setIsModalDeleteOpen(true);
         setDataDelete(item)
     }
+
+    const handleEditBtn = (item) => {
+        setIsModalOpen(true);
+        setDataUpdate(item)
+    }
     return (
         <>
 
@@ -45,6 +51,8 @@ const UserPage = () => {
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 fetchListUSer={fetchListUSer}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
             />
             <ModalDeleteUser
                 isModalDeleteOpen={isModalDeleteOpen}
@@ -82,7 +90,8 @@ const UserPage = () => {
                     key="action"
                     render={(_, record) => (
                         <Space size="middle">
-                            <a>Invite {record.lastName}</a>
+                            <a>View</a>
+                            <a onClick={() => handleEditBtn(record)}>Edit</a>
                             <a onClick={() => handleDeleteBtn(record)}>Delete</a>
                         </Space>
                     )}

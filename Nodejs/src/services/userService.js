@@ -124,6 +124,7 @@ const addNewUser = async (firstName, lastName, email, password, role, phone, add
 
 const deleteUserwithId = async (userId) => {
     try {
+
         let result = await db.User.destroy({
             where: {
                 id: userId,
@@ -143,4 +144,34 @@ const deleteUserwithId = async (userId) => {
     }
 }
 
-module.exports = { createUser, loginService, getUserService, addNewUser, deleteUserwithId }
+const updateUserwithId = async (id, firstName, lastName, role, phone, address) => {
+    try {
+
+        let result = await db.User.update(
+            {
+                firstName: firstName,
+                lastName: lastName,
+                role: role,
+                phone: phone,
+                address: address
+            },
+            {
+                where: {
+                    id: id,
+                },
+            },
+        );
+        return {
+            result,
+            EC: 0,
+            EM: "Successful to update user"
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: "Cannot delete new user"
+        };
+    }
+}
+module.exports = { createUser, loginService, getUserService, addNewUser, deleteUserwithId, updateUserwithId }
