@@ -1,4 +1,4 @@
-const { createUser, loginService, getUserService, addNewUser } = require("../services/userService")
+const { createUser, loginService, getUserService, addNewUser, deleteUserwithId } = require("../services/userService")
 
 const CreateUser = async (req, res) => {
     const { firstName, lastName, email, password } = req.body
@@ -29,4 +29,13 @@ const postAddNewUser = async (req, res) => {
 
     return res.status(200).json(data)
 }
-module.exports = { CreateUser, handleLogin, getUser, postAddNewUser }
+
+const deleteUser = async (req, res) => {
+    const { userId } = req.body
+
+    const data = await deleteUserwithId(userId)
+
+    return res.status(200).json(data)
+}
+
+module.exports = { CreateUser, handleLogin, getUser, postAddNewUser, deleteUser }

@@ -23,7 +23,7 @@ const LoginPage = () => {
             navigate('/')
         }
         if (res && res.EC !== 0) {
-            notification.success({
+            notification.error({
                 message: "Login Fail!",
                 description: res?.EM ?? "error"
             })

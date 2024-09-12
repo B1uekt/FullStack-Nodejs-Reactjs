@@ -19,7 +19,7 @@ const RegisterPage = () => {
             navigate('/login')
         }
         else {
-            notification.success({
+            notification.error({
                 message: "Create User fail",
                 description: "error"
             })

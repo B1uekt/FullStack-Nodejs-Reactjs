@@ -8,11 +8,21 @@ const ModalCreateUser = (props) => {
         const { email, password, firstName, lastName, role, phone, address } = values;
 
         const res = await postCreateUser(firstName, lastName, email, password, role, phone, address)
-        console.log(res)
-        fetchListUSer()
-        setIsModalOpen(false);
-        form.resetFields();
-
+        if (res && res.EC === 0) {
+            notification.success({
+                message: "Success",
+                description: res.EM
+            })
+            fetchListUSer()
+            setIsModalOpen(false);
+            form.resetFields();
+        }
+        else {
+            notification.error({
+                message: "Error",
+                description: res.EM
+            })
+        }
     };
     const handleCancel = () => {
         setIsModalOpen(false);

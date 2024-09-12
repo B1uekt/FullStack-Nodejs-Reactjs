@@ -83,6 +83,9 @@ const getUserService = async () => {
     try {
         let result = await db.User.findAll({
             attributes: ['id', 'email', 'firstName', 'lastName', 'phone', 'address', 'role', 'gender'],
+            order: [
+                ['id', 'DESC'],
+            ]
         })
         return result;
     } catch (error) {
@@ -119,4 +122,25 @@ const addNewUser = async (firstName, lastName, email, password, role, phone, add
     }
 }
 
-module.exports = { createUser, loginService, getUserService, addNewUser }
+const deleteUserwithId = async (userId) => {
+    try {
+        let result = await db.User.destroy({
+            where: {
+                id: userId,
+            },
+        });
+        return {
+            result,
+            EC: 0,
+            EM: "Successful to delete user"
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: "Cannot delete new user"
+        };
+    }
+}
+
+module.exports = { createUser, loginService, getUserService, addNewUser, deleteUserwithId }

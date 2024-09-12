@@ -4,12 +4,14 @@ import { fetchListUser } from '../../services/UserServices';
 import ModalCreateUser from './Modal/ModalCreateUser';
 import { PlusCircleFilled } from '@ant-design/icons';
 import '../../styles/user.scss'
+import ModalDeleteUser from './Modal/ModalDeleteUser';
 const { Column } = Table;
 
 const UserPage = () => {
     const [dataListUser, setDataUser] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false)
+    const [dataDelete, setDataDelete] = useState({})
     const fetchListUSer = async () => {
         const res = await fetchListUser();
         if (!res?.message) {
@@ -31,6 +33,10 @@ const UserPage = () => {
         setIsModalOpen(true);
     };
 
+    const handleDeleteBtn = (item) => {
+        setIsModalDeleteOpen(true);
+        setDataDelete(item)
+    }
     return (
         <>
 
@@ -38,6 +44,13 @@ const UserPage = () => {
             <ModalCreateUser
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
+                fetchListUSer={fetchListUSer}
+            />
+            <ModalDeleteUser
+                isModalDeleteOpen={isModalDeleteOpen}
+                setIsModalDeleteOpen={setIsModalDeleteOpen}
+                dataDelete={dataDelete}
+                setDataDelete={setDataDelete}
                 fetchListUSer={fetchListUSer}
             />
             <Table pagination={{ defaultCurrent: 1, pageSize: 5, align: "center" }} dataSource={dataListUser} rowKey={(record) => `user_${record.id}`}>
@@ -70,7 +83,7 @@ const UserPage = () => {
                     render={(_, record) => (
                         <Space size="middle">
                             <a>Invite {record.lastName}</a>
-                            <a>Delete</a>
+                            <a onClick={() => handleDeleteBtn(record)}>Delete</a>
                         </Space>
                     )}
                 />
