@@ -16,6 +16,7 @@ import NotFound from './pages/notfound.jsx';
 import AdminPage from './pages/admin.jsx';
 import Product from './components/Admin/product.jsx';
 import './styles/index.scss'
+import BlindBox from './pages/blindboxtoys.jsx';
 
 
 const router = createBrowserRouter([
@@ -40,6 +41,12 @@ const router = createBrowserRouter([
         path: "login",
         element: (
           <LoginPage />
+        ),
+      },
+      {
+        path: "blind-box",
+        element: (
+          <BlindBox />
         ),
       },
     ]

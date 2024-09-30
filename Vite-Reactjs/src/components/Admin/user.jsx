@@ -25,7 +25,6 @@ const UserPage = () => {
         }
     };
 
-    // Gọi fetchUSer khi component mount lần đầu tiên
     useEffect(() => {
         fetchListUSer();
     }, []);

@@ -1,9 +1,14 @@
 const express = require('express')
 const { CreateUser, handleLogin, getUser, postAddNewUser, deleteUser, putUpdateUser } = require('../controllers/userController')
+const { getAllProduct, postCreateNewProduct } = require('../controllers/productController')
+const { getAllType } = require('../controllers/typeController')
 const { delay } = require('../middleware/delay')
 const { auth, checkRole } = require('../middleware/auth')
-
 const routerAPI = express.Router()
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 routerAPI.all("*", auth)
 
@@ -17,5 +22,12 @@ routerAPI.post("/login", handleLogin)
 routerAPI.post("/createUser", checkRole, postAddNewUser)
 routerAPI.delete("/deleteUser", checkRole, deleteUser)
 routerAPI.put("/updateUser", putUpdateUser)
+
+
+routerAPI.get("/collection/all", getAllProduct)
+routerAPI.post("/createProduct", upload.array('images'), postCreateNewProduct)
+
+
+routerAPI.get("/type/all", getAllType)
 
 module.exports = routerAPI

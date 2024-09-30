@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DownOutlined, ShoppingCartOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined, ShoppingCartOutlined, SearchOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { Menu, Row, Col, Dropdown, notification } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import LogoHeader from '../../assets/images/logo.png'
@@ -26,10 +26,27 @@ const Header = () => {
         {
             label: <Link to="/about-toys">ALL ABOUT TOYS</Link>,
             key: 'toy',
+            icon: <AppstoreOutlined />,
+            children: [
+                {
+                    key: 'blind box',
+                    label: <Link to="/blind-box">Blind Box ( Hộp mù )</Link>,
+                },
+                {
+                    key: 'limited figure',
+                    label: 'Limited Figure',
+                },
+                {
+                    key: 'action figure',
+                    label: 'Action Figure',
+                },
+            ],
         },
         {
             label: <Link to="/accessories">ACCESSORIES</Link>,
             key: 'accessories',
+
+
         },
         {
             label: <Link to="/about-us">ABOUT US</Link>,
