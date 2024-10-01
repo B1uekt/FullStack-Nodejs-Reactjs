@@ -2,29 +2,21 @@ import { useEffect, useState } from 'react';
 import '../styles/blindboxtoys.scss'
 import { Row, Col, Radio, notification } from 'antd';
 import { getAllProduct } from '../services/ProductServiecs';
-import { Buffer } from 'buffer';
+import commonUtil from '../util/commonUtils';
 const BlindBox = () => {
     const [value, setValue] = useState(1);
     const [dataProduct, setDataProduct] = useState([]);
 
-    const bufferToBase64 = (buffer) => {
-        const imageBuffer = Buffer.from(buffer);
-        return `data:image/png;base64,${imageBuffer.toString('base64')}`;
-    };
-
-
     useEffect(() => {
         const fetchListProduct = async () => {
             const res = await getAllProduct();
-            console.log(res)
             if (res && res.EC === 0 && Array.isArray(res.result)) {
-                console.log(res)
                 const productsWithBase64 = await Promise.all(
                     res.result.map(async (product) => {
-                        const imageBase64 = product.image ? await bufferToBase64(product.image) : null;
-                        const thumbnail1Base64 = product.thumbnail_1 ? await bufferToBase64(product.thumbnail_1) : null;
-                        const thumbnail2Base64 = product.thumbnail_2 ? await bufferToBase64(product.thumbnail_2) : null;
-                        const thumbnail3Base64 = product.thumbnail_3 ? await bufferToBase64(product.thumbnail_3) : null;
+                        const imageBase64 = product.image ? await commonUtil.bufferToBase64(product.image) : null;
+                        const thumbnail1Base64 = product.thumbnail_1 ? await commonUtil.bufferToBase64(product.thumbnail_1) : null;
+                        const thumbnail2Base64 = product.thumbnail_2 ? await commonUtil.bufferToBase64(product.thumbnail_2) : null;
+                        const thumbnail3Base64 = product.thumbnail_3 ? await commonUtil.bufferToBase64(product.thumbnail_3) : null;
                         return {
                             id: product.id,
                             name: product.name,
@@ -61,6 +53,7 @@ const BlindBox = () => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
     };
+
     return (
         <div className="container">
             <Row wrap={true} gutter={16}>
@@ -94,7 +87,16 @@ const BlindBox = () => {
                                         return (
                                             <Col key={`${index}-product`} className='product-card' span={8}>
                                                 <div className='product-img'>
-                                                    <img src={item.image} alt={`${item.name} image`} />
+                                                    <img
+                                                        src={item.image}
+                                                        alt={`${item.name} image`}
+                                                        className='image-front'
+                                                    />
+                                                    <img
+                                                        src={item.thumbnail_1}
+                                                        alt={`${item.name} image`}
+                                                        className='image-back'
+                                                    />
                                                 </div>
                                                 <div className='product-content'>
                                                     <h4 className='product-series'>{item.typeName}</h4>

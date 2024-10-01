@@ -4,26 +4,74 @@ import { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import _ from 'lodash'
 import { getAllType } from '../../../services/TypeServices';
-import { postNewProduct } from '../../../services/ProductServiecs';
+import { postNewProduct, putProduct } from '../../../services/ProductServiecs';
+import commonUtil from "../../../util/commonUtils";
 const ModalCreateProduct = (props) => {
-    const { isModalOpen, setIsModalOpen } = props
+    const { isModalOpen, setIsModalOpen, dataProductUpdate, setDataProductUpdate } = props
     const [form] = Form.useForm();
     const { TextArea } = Input;
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [fileList, setFileList] = useState([]);
-    const [isDiscount, setIsDiscount] = useState(false)
+    const [isDiscount, setIsDiscount] = useState(0)
     const [listType, setListType] = useState([])
-    const [isDiscountValue, setIsDiscountValue] = useState("0")
+
+
     useEffect(() => {
         const fetchType = async () => {
             const res = await getAllType()
             if (res && res.result) {
                 setListType(res.result)
             }
+
         }
         fetchType()
     }, [])
+
+    useEffect(() => {
+        if (dataProductUpdate && !_.isEmpty(dataProductUpdate)) {
+            form.setFieldsValue({
+                is_discount: dataProductUpdate.is_discount ? "YES" : "NO",
+                id: dataProductUpdate.id,
+                name: dataProductUpdate.name,
+                price: dataProductUpdate.price,
+                discount: parseFloat(dataProductUpdate.discount_percent),
+                type: dataProductUpdate.typeName,
+                description: dataProductUpdate.description,
+            });
+            const files = [
+                {
+                    uid: 'image',
+                    name: 'image.png',
+                    status: 'done',
+                    url: dataProductUpdate.image,
+                    originFileObj: commonUtil.convertBase64ToFile(dataProductUpdate.image, 'image.png'),
+                },
+                {
+                    uid: 'thumbnail_1',
+                    name: 'thumbnail_1.png',
+                    status: 'done',
+                    url: dataProductUpdate.thumbnail_1,
+                    originFileObj: commonUtil.convertBase64ToFile(dataProductUpdate.thumbnail_1, 'thumbnail_1.png'),
+                },
+                {
+                    uid: 'thumbnail_2',
+                    name: 'thumbnail_2.png',
+                    status: 'done',
+                    url: dataProductUpdate.thumbnail_2,
+                    originFileObj: commonUtil.convertBase64ToFile(dataProductUpdate.thumbnail_2, 'thumbnail_2.png'),
+                },
+                {
+                    uid: 'thumbnail_3',
+                    name: 'thumbnail_3.png',
+                    status: 'done',
+                    url: dataProductUpdate.thumbnail_3,
+                    originFileObj: commonUtil.convertBase64ToFile(dataProductUpdate.thumbnail_3, 'thumbnail_3.png'),
+                },
+            ];
+            setFileList(files);
+        }
+    }, [dataProductUpdate])
 
     const getBase64 = async (file) => {
         try {
@@ -70,64 +118,69 @@ const ModalCreateProduct = (props) => {
         </button>
     );
 
-    const convertBase64toBlob = (fileList) => {
-        const blobs = fileList.map(image => {
-            const base64Data = image.thumbUrl.replace(/^data:image\/png;base64,/, ""); // Bỏ tiền tố
-            const binaryString = window.atob(base64Data); // Giải mã chuỗi base64 thành nhị phân
-            const len = binaryString.length;
-            const bytes = new Uint8Array(len); // Tạo Uint8Array để lưu dữ liệu nhị phân
-
-            for (let i = 0; i < len; i++) {
-                bytes[i] = binaryString.charCodeAt(i); // Gán từng ký tự thành byte
-            }
-
-            return new Blob([bytes], { type: 'image/png' }); // Tạo Blob từ Uint8Array
-        });
-        return blobs;
-    }
-
     const onFinish = async (values) => {
-        const { name, price, is_discount, discount, description, type } = values;
+        const { id, name, price, is_discount, discount, description, type } = values;
         if (is_discount === 'YES') {
-            setIsDiscountValue("1")
+            setIsDiscount(1)
         }
-        // console.log(name, price, isDiscountValue, discount, description, type)
-        // const arrayBlob = convertBase64toBlob(fileList)
-        console.log(fileList)
-        const res = await postNewProduct(name, price, isDiscountValue, discount, description, type, fileList)
-        console.log(res)
-        if (res && res.EC === 0) {
-            notification.success({
-                message: "Create Product succeed!",
-                description: res.EM,
-            })
-            handleCancel()
+        // console.log(id, name, price, isDiscount, +discount, description, type)
+        if (dataProductUpdate && !_.isEmpty(dataProductUpdate)) {
+            const res = await putProduct(id, name, price, isDiscount, +discount, description, type, fileList)
+            console.log(res)
+            if (res && res.EC === 0) {
+                notification.success({
+                    message: "Update Product succeed!",
+                    description: res.EM,
+                })
+                props.fetchListProduct()
+                handleCancel()
+            }
+            else {
+                notification.error({
+                    message: "Update Product fail",
+                    description: res.EM,
+                })
+            }
         }
         else {
-            notification.error({
-                message: "Create product fail",
-                description: res.EM,
-            })
+            const res = await postNewProduct(name, price, isDiscount, +discount, description, type, fileList)
+            console.log(res)
+            if (res && res.EC === 0) {
+                notification.success({
+                    message: "Create Product succeed!",
+                    description: res.EM,
+                })
+                props.fetchListProduct()
+                handleCancel()
+            }
+            else {
+                notification.error({
+                    message: "Create product fail",
+                    description: res.EM,
+                })
+            }
         }
+
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
         form.resetFields();
         setFileList([])
+        setDataProductUpdate({})
     };
     const handleDiscount = (value) => {
         if (value === 'YES') {
-            setIsDiscount(true)
+            setIsDiscount(1)
         }
         else {
             form.setFieldsValue({ discount: '0' });
-            setIsDiscount(false)
+            setIsDiscount(0)
         }
     }
     return (
         <Modal
-            className="modal-add"
+            className="modal-add modal-product"
             maskClosable={false}
             title="Add New Product"
             open={isModalOpen}
@@ -158,6 +211,12 @@ const ModalCreateProduct = (props) => {
                 autoComplete="off"
             >
                 <Row wrap={true} gutter={16}>
+
+                    <Form.Item
+                        name="id"
+                    >
+                        <Input style={{ display: 'none' }} />
+                    </Form.Item>
                     <Col span={18}>
                         <Form.Item
                             label="Name"
@@ -178,6 +237,7 @@ const ModalCreateProduct = (props) => {
                             <Input />
                         </Form.Item>
                     </Col>
+
                     <Col span={6}>
                         <Form.Item
                             label="Price (VND)"
@@ -245,7 +305,7 @@ const ModalCreateProduct = (props) => {
                                 }
                             ]}
                         >
-                            <Input disabled={isDiscount === false} />
+                            <Input disabled={isDiscount === 0 ? true : false} />
                         </Form.Item>
                     </Col>
                     <Col span={6}>

@@ -2,8 +2,14 @@
     &.modal-add {
         width: 750px !important;
 
+        &.modal-product {
+            top: 5%;
+        }
+
         .ant-modal-content {
             width: 800px;
+            top: -75%;
+
 
             .ant-modal-body {
 

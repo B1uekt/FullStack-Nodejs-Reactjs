@@ -4,7 +4,7 @@ import { postCreateUser, putUpdateUser } from '../../../services/UserServices';
 import { useEffect } from 'react';
 import _ from 'lodash'
 const ModalCreateUser = (props) => {
-    const { isModalOpen, setIsModalOpen, fetchListUSer, dataUpdate, setDataUpdate } = props
+    const { isModalOpen, setIsModalOpen, fetchListUSer, dataUpdate, setDataUpdate, isViewUser, setIsViewUser } = props
 
     const [form] = Form.useForm();
 
@@ -77,13 +77,14 @@ const ModalCreateUser = (props) => {
         }
         setIsModalOpen(false);
         form.resetFields();
+        setIsViewUser(false)
     };
 
     return (
         <Modal
             className="modal-add"
             maskClosable={false}
-            title="Add New User"
+            title={dataUpdate && _.isEmpty(dataUpdate) ? "Add New User" : "Edit User"}
             open={isModalOpen}
             onCancel={handleCancel}
             footer={null}
@@ -111,6 +112,7 @@ const ModalCreateUser = (props) => {
                 <Row wrap={true} gutter={16}>
                     <Col span={12}>
                         <Form.Item
+
                             label="Email"
                             name="email"
                             rules={[
@@ -130,7 +132,7 @@ const ModalCreateUser = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewUser} />
                         </Form.Item>
                     </Col>
                     {
@@ -168,7 +170,7 @@ const ModalCreateUser = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewUser} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -182,7 +184,7 @@ const ModalCreateUser = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewUser} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -202,7 +204,7 @@ const ModalCreateUser = (props) => {
                                 },
                             ]}
                         >
-                            <Select>
+                            <Select disabled={isViewUser}>
                                 <Select.Option value="ADMIN">ADMIN</Select.Option>
                                 <Select.Option value="USER">USER</Select.Option>
                             </Select>
@@ -229,7 +231,7 @@ const ModalCreateUser = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewUser} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -249,7 +251,7 @@ const ModalCreateUser = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewUser} />
                         </Form.Item>
                     </Col>
                 </Row>

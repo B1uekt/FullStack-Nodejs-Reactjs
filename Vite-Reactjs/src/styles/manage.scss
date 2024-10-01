@@ -32,6 +32,14 @@
     padding: 12px;
     height: 360px;
 
+    &.product-table {
+        height: 480px;
+
+        .product-name {
+            text-transform: uppercase;
+        }
+    }
+
     .ant-spin-nested-loading {
         height: 100%;
 
@@ -49,8 +57,4 @@
 
     }
 
-}
-
-.modal-add {
-    width: 150px;
 }

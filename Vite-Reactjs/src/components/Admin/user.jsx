@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { notification, Space, Table, Tag, Modal } from 'antd';
+import { notification, Space, Table, Tag } from 'antd';
 import { fetchListUser } from '../../services/UserServices';
 import ModalCreateUser from './Modal/ModalCreateUser';
 import { PlusCircleFilled } from '@ant-design/icons';
-import '../../styles/user.scss'
+import '../../styles/manage.scss'
 import ModalDeleteUser from './Modal/ModalDeleteUser';
 const { Column } = Table;
 
@@ -13,6 +13,7 @@ const UserPage = () => {
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false)
     const [dataDelete, setDataDelete] = useState({})
     const [dataUpdate, setDataUpdate] = useState({})
+    const [isViewUser, setIsViewUser] = useState(false)
     const fetchListUSer = async () => {
         const res = await fetchListUser();
         if (!res?.message) {
@@ -42,6 +43,12 @@ const UserPage = () => {
         setIsModalOpen(true);
         setDataUpdate(item)
     }
+
+    const handleViewBtn = (item) => {
+        setIsModalOpen(true)
+        setDataUpdate(item)
+        setIsViewUser(true)
+    }
     return (
         <>
 
@@ -52,6 +59,8 @@ const UserPage = () => {
                 fetchListUSer={fetchListUSer}
                 dataUpdate={dataUpdate}
                 setDataUpdate={setDataUpdate}
+                isViewUser={isViewUser}
+                setIsViewUser={setIsViewUser}
             />
             <ModalDeleteUser
                 isModalDeleteOpen={isModalDeleteOpen}
@@ -89,7 +98,7 @@ const UserPage = () => {
                     key="action"
                     render={(_, record) => (
                         <Space size="middle">
-                            <a>View</a>
+                            <a onClick={() => handleViewBtn(record)}>View</a>
                             <a onClick={() => handleEditBtn(record)}>Edit</a>
                             <a onClick={() => handleDeleteBtn(record)}>Delete</a>
                         </Space>

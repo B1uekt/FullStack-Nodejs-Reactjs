@@ -34,7 +34,7 @@ const loginService = async (email, password) => {
             if (!isMatchPassword) {
                 return {
                     EC: 1,
-                    EM: "Emai/Password không hợp lệ"
+                    EM: "Password không hợp lệ"
                 }
             }
             else {

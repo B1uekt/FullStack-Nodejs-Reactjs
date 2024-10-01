@@ -1,6 +1,6 @@
 const express = require('express')
 const { CreateUser, handleLogin, getUser, postAddNewUser, deleteUser, putUpdateUser } = require('../controllers/userController')
-const { getAllProduct, postCreateNewProduct } = require('../controllers/productController')
+const { getAllProduct, postCreateNewProduct, putUpdateProduct } = require('../controllers/productController')
 const { getAllType } = require('../controllers/typeController')
 const { delay } = require('../middleware/delay')
 const { auth, checkRole } = require('../middleware/auth')
@@ -26,7 +26,7 @@ routerAPI.put("/updateUser", putUpdateUser)
 
 routerAPI.get("/collection/all", getAllProduct)
 routerAPI.post("/createProduct", upload.array('images'), postCreateNewProduct)
-
+routerAPI.put("/updateProduct", upload.array('images'), putUpdateProduct)
 
 routerAPI.get("/type/all", getAllType)
 

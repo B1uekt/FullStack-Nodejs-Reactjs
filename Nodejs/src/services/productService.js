@@ -48,9 +48,8 @@ const postProductService = async (name, price, is_discount, discount_percent, fi
             typeId: typeRecord.id,
         };
 
-        // Nếu có files, thêm hình ảnh và các thumbnails vào productData
         if (files && files.length > 0) {
-            productData.image = files[0]?.buffer; // Lấy file đầu tiên làm hình ảnh chính
+            productData.image = files[0]?.buffer;
             files.slice(1).forEach((file, index) => {
                 if (index === 0) productData.thumbnail_1 = file.buffer;
                 if (index === 1) productData.thumbnail_2 = file.buffer;
@@ -75,4 +74,48 @@ const postProductService = async (name, price, is_discount, discount_percent, fi
     }
 };
 
-module.exports = { getAllProductService, postProductService };
+
+const putProductService = async (id, name, price, is_discount, discount_percent, files, description, type) => {
+    try {
+        const typeRecord = await db.Type.findOne({
+            where: { name: type },
+            attributes: ['id'],
+        });
+
+        if (!typeRecord) {
+            return { EC: 1, EM: 'Type not found' };
+        }
+        const productData = {
+            name,
+            price,
+            is_discount,
+            discount_percent,
+            description,
+            typeId: typeRecord.id,
+        };
+
+        if (files && files.length > 0) {
+            productData.image = files[0]?.buffer;
+            files.slice(1).forEach((file, index) => {
+                if (index === 0) productData.thumbnail_1 = file.buffer;
+                if (index === 1) productData.thumbnail_2 = file.buffer;
+                if (index === 2) productData.thumbnail_3 = file.buffer;
+            });
+        }
+        const result = await db.Product.update(productData, {
+            where: { id: id },
+        });
+        return {
+            result,
+            EC: 0,
+            EM: 'Success',
+        };
+    } catch (error) {
+        return {
+            EC: 1,
+            EM: 'Failed to update product',
+            error: error.message
+        };
+    }
+}
+module.exports = { getAllProductService, postProductService, putProductService };

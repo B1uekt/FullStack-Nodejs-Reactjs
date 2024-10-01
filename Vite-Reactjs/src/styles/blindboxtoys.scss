@@ -88,6 +88,7 @@
                                 white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
+                                text-transform: uppercase;
                             }
 
                             .product-price {
@@ -97,10 +98,30 @@
                         }
 
                         .product-img {
-                            height: 293px;
+                            height: 275px;
+                            position: relative;
+
 
                             img {
-                                max-height: 293px;
+                                height: 275px;
+                                transition: opacity 1s ease;
+                                width: 220px;
+
+                                &.image-font {
+                                    top: 0;
+                                    left: 0
+                                }
+
+                                &.image-back {
+                                    height: 275px;
+                                    width: 220px;
+                                    opacity: 0;
+                                    bottom: -10%;
+                                    position: absolute;
+                                    top: 0;
+                                    left: 42px;
+                                    max-height: 293px;
+                                }
                             }
                         }
 
@@ -141,6 +162,15 @@
 
                             .hover-content {
                                 transform: translateY(0);
+                            }
+                        }
+
+                        .product-img {
+
+                            img {
+                                &.image-back {
+                                    opacity: 1;
+                                }
                             }
                         }
                     }
