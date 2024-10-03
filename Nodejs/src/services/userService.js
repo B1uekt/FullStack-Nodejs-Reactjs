@@ -139,7 +139,7 @@ const deleteUserwithId = async (userId) => {
         console.log(error);
         return {
             EC: 1,
-            EM: "Cannot delete new user"
+            EM: "Cannot delete user"
         };
     }
 }

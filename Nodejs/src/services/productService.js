@@ -27,7 +27,7 @@ const getAllProductService = async () => {
 };
 
 
-const postProductService = async (name, price, is_discount, discount_percent, files, description, type) => {
+const postProductService = async (name, price, is_discount, discount_percent, files, description, type, quantity) => {
     try {
         // Tìm `typeId` từ database dựa trên tên type
         const typeRecord = await db.Type.findOne({
@@ -46,6 +46,7 @@ const postProductService = async (name, price, is_discount, discount_percent, fi
             discount_percent,
             description,
             typeId: typeRecord.id,
+            quantity: quantity
         };
 
         if (files && files.length > 0) {
@@ -75,7 +76,7 @@ const postProductService = async (name, price, is_discount, discount_percent, fi
 };
 
 
-const putProductService = async (id, name, price, is_discount, discount_percent, files, description, type) => {
+const putProductService = async (id, name, price, is_discount, discount_percent, files, description, type, quantity) => {
     try {
         const typeRecord = await db.Type.findOne({
             where: { name: type },
@@ -92,8 +93,8 @@ const putProductService = async (id, name, price, is_discount, discount_percent,
             discount_percent,
             description,
             typeId: typeRecord.id,
+            quantity: +quantity,
         };
-
         if (files && files.length > 0) {
             productData.image = files[0]?.buffer;
             files.slice(1).forEach((file, index) => {
@@ -118,4 +119,25 @@ const putProductService = async (id, name, price, is_discount, discount_percent,
         };
     }
 }
-module.exports = { getAllProductService, postProductService, putProductService };
+
+const deleteProductService = async (productId) => {
+    try {
+        let result = await db.Product.destroy({
+            where: {
+                id: productId,
+            },
+        });
+        return {
+            result,
+            EC: 0,
+            EM: "Successful to delete product"
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: "Cannot delete user"
+        };
+    }
+}
+module.exports = { getAllProductService, postProductService, putProductService, deleteProductService };

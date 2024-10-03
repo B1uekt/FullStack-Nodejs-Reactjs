@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         thumbnail_2: DataTypes.BLOB,
         thumbnail_3: DataTypes.BLOB,
         description: DataTypes.STRING,
+        quantity: DataTypes.INTEGER,
         typeId: {
             type: DataTypes.INTEGER,
             references: {

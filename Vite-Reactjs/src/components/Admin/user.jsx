@@ -4,7 +4,7 @@ import { fetchListUser } from '../../services/UserServices';
 import ModalCreateUser from './Modal/ModalCreateUser';
 import { PlusCircleFilled } from '@ant-design/icons';
 import '../../styles/manage.scss'
-import ModalDeleteUser from './Modal/ModalDeleteUser';
+import ModalDelete from './Modal/ModalDelete';
 const { Column } = Table;
 
 const UserPage = () => {
@@ -62,7 +62,7 @@ const UserPage = () => {
                 isViewUser={isViewUser}
                 setIsViewUser={setIsViewUser}
             />
-            <ModalDeleteUser
+            <ModalDelete
                 isModalDeleteOpen={isModalDeleteOpen}
                 setIsModalDeleteOpen={setIsModalDeleteOpen}
                 dataDelete={dataDelete}

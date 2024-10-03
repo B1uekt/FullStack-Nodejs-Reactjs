@@ -23,6 +23,13 @@ const ModalCreateUser = (props) => {
 
     const onFinish = async (values) => {
         const { firstName, lastName, role, phone, address } = values;
+        if (isViewUser) {
+            notification.error({
+                message: "Update Product fail",
+                description: "Can't change info product in view",
+            })
+            return
+        }
         if (dataUpdate && !_.isEmpty(dataUpdate)) {
             const res = await putUpdateUser(dataUpdate.id, firstName, lastName, role, phone, address)
             if (res && res.EC === 0) {

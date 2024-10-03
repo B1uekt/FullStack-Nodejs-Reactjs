@@ -4,6 +4,7 @@ import ModalCreateProduct from "./Modal/ModalCreateProduct";
 import { getAllProduct } from "../../services/ProductServiecs";
 import commonUtil from "../../util/commonUtils";
 import { notification, Space, Table, Tag } from 'antd';
+import ModalDelete from './Modal/ModalDelete';
 import '../../styles/manage.scss'
 const { Column } = Table;
 
@@ -13,7 +14,9 @@ const Product = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [dataProductUpdate, setDataProductUpdate] = useState({})
-
+    const [isViewProduct, setIsViewProduct] = useState(false)
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false)
+    const [dataDelete, setDataDelete] = useState({})
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -22,13 +25,23 @@ const Product = () => {
     }, [])
 
     const handleEditBtn = (item) => {
-        setIsModalOpen(true);
+        setIsModalOpen(true)
         setDataProductUpdate(item)
     }
-    console.log(dataProductUpdate)
+
+    const handleViewBtn = (item) => {
+        setIsModalOpen(true)
+        setDataProductUpdate(item)
+        setIsViewProduct(true)
+    }
+    const handleDeleteBtn = (item) => {
+        setIsModalDeleteOpen(true);
+        setDataDelete(item)
+    }
     const fetchListProduct = async () => {
         const res = await getAllProduct();
         if (res && res.EC === 0 && Array.isArray(res.result)) {
+            console.log(res)
             const productsWithBase64 = await Promise.all(
                 res.result.map(async (product) => {
                     const imageBase64 = product.image ? await commonUtil.bufferToBase64(product.image) : null;
@@ -46,7 +59,8 @@ const Product = () => {
                         thumbnail_2: thumbnail2Base64,
                         thumbnail_3: thumbnail3Base64,
                         description: product.description,
-                        typeName: product.Type.name
+                        typeName: product.Type.name,
+                        quantity: product.quantity
                     };
                 })
             );
@@ -69,6 +83,15 @@ const Product = () => {
                 fetchListProduct={fetchListProduct}
                 dataProductUpdate={dataProductUpdate}
                 setDataProductUpdate={setDataProductUpdate}
+                isViewProduct={isViewProduct}
+                setIsViewProduct={setIsViewProduct}
+            />
+            <ModalDelete
+                isModalDeleteOpen={isModalDeleteOpen}
+                setIsModalDeleteOpen={setIsModalDeleteOpen}
+                dataDelete={dataDelete}
+                setDataDelete={setDataDelete}
+                fetchListProduct={fetchListProduct}
             />
             <Table className="product-table" pagination={{ defaultCurrent: 1, pageSize: 4, align: "center" }} dataSource={dataProduct} rowKey={(record) => `user_${record.id}`}>
                 <Column
@@ -96,8 +119,9 @@ const Product = () => {
                         src={previewImage}
                     />
                 )}
-                <Column title="Price" dataIndex="price" key="firstName" />
+                <Column title="Price" dataIndex="price" key="price" />
                 <Column title="Discount" dataIndex="discount_percent" key="lastName" />
+                <Column title="Quantity" dataIndex="quantity" key="quantity" />
                 <Column
                     title="Type"
                     dataIndex="typeName"
@@ -106,6 +130,9 @@ const Product = () => {
                         let color = 'geekblue';
                         if (type === 'Limited Figure') {
                             color = 'volcano';
+                        }
+                        if (type === 'Blind Box') {
+                            color = 'green'
                         }
 
                         return (
@@ -120,7 +147,7 @@ const Product = () => {
                     key="action"
                     render={(_, record) => (
                         <Space size="middle">
-                            <a>View</a>
+                            <a onClick={() => handleViewBtn(record)}>View</a>
                             <a onClick={() => handleEditBtn(record)}>Edit</a>
                             <a onClick={() => handleDeleteBtn(record)}>Delete</a>
                         </Space>

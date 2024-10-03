@@ -7,7 +7,7 @@ import { getAllType } from '../../../services/TypeServices';
 import { postNewProduct, putProduct } from '../../../services/ProductServiecs';
 import commonUtil from "../../../util/commonUtils";
 const ModalCreateProduct = (props) => {
-    const { isModalOpen, setIsModalOpen, dataProductUpdate, setDataProductUpdate } = props
+    const { isModalOpen, setIsModalOpen, dataProductUpdate, setDataProductUpdate, isViewProduct, setIsViewProduct } = props
     const [form] = Form.useForm();
     const { TextArea } = Input;
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -38,6 +38,7 @@ const ModalCreateProduct = (props) => {
                 discount: parseFloat(dataProductUpdate.discount_percent),
                 type: dataProductUpdate.typeName,
                 description: dataProductUpdate.description,
+                quantity: dataProductUpdate.quantity
             });
             const files = [
                 {
@@ -97,7 +98,6 @@ const ModalCreateProduct = (props) => {
     };
     const handleChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
-        console.log(fileList)
     }
     const uploadButton = (
         <button
@@ -119,14 +119,29 @@ const ModalCreateProduct = (props) => {
     );
 
     const onFinish = async (values) => {
-        const { id, name, price, is_discount, discount, description, type } = values;
+        if (isViewProduct) {
+            notification.error({
+                message: "Update Product fail",
+                description: "Can't change info product in view",
+            })
+            return
+        }
+        const { id, name, price, is_discount, discount, description, type, quantity } = values;
         if (is_discount === 'YES') {
             setIsDiscount(1)
         }
-        // console.log(id, name, price, isDiscount, +discount, description, type)
+
+        if (fileList.length < 4 || fileList.length === 0) {
+            notification.error({
+                message: "Update Product fail",
+                description: "",
+            })
+            return
+        }
+        //console.log(id, name, price, isDiscount, +discount, description, type, quantity)
         if (dataProductUpdate && !_.isEmpty(dataProductUpdate)) {
-            const res = await putProduct(id, name, price, isDiscount, +discount, description, type, fileList)
-            console.log(res)
+            const res = await putProduct(id, name, price, isDiscount, +discount, description, type, fileList, +quantity)
+            // console.log(res)
             if (res && res.EC === 0) {
                 notification.success({
                     message: "Update Product succeed!",
@@ -143,8 +158,8 @@ const ModalCreateProduct = (props) => {
             }
         }
         else {
-            const res = await postNewProduct(name, price, isDiscount, +discount, description, type, fileList)
-            console.log(res)
+            const res = await postNewProduct(name, price, isDiscount, +discount, description, type, fileList, +quantity)
+            // console.log(res)
             if (res && res.EC === 0) {
                 notification.success({
                     message: "Create Product succeed!",
@@ -168,6 +183,7 @@ const ModalCreateProduct = (props) => {
         form.resetFields();
         setFileList([])
         setDataProductUpdate({})
+        setIsViewProduct(false)
     };
     const handleDiscount = (value) => {
         if (value === 'YES') {
@@ -234,7 +250,7 @@ const ModalCreateProduct = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewProduct} />
                         </Form.Item>
                     </Col>
 
@@ -259,7 +275,7 @@ const ModalCreateProduct = (props) => {
                                 span: 24,
                             }}
                         >
-                            <Input />
+                            <Input disabled={isViewProduct} />
                         </Form.Item>
                     </Col>
 
@@ -281,7 +297,7 @@ const ModalCreateProduct = (props) => {
                                 },
                             ]}
                         >
-                            <Select onChange={(value) => handleDiscount(value)}>
+                            <Select disabled={isViewProduct} onChange={(value) => handleDiscount(value)}>
                                 <Select.Option value="YES">YES</Select.Option>
                                 <Select.Option value="NO">NO</Select.Option>
                             </Select>
@@ -305,7 +321,7 @@ const ModalCreateProduct = (props) => {
                                 }
                             ]}
                         >
-                            <Input disabled={isDiscount === 0 ? true : false} />
+                            <Input disabled={isDiscount === 0 || isViewProduct ? true : false} />
                         </Form.Item>
                     </Col>
                     <Col span={6}>
@@ -326,7 +342,7 @@ const ModalCreateProduct = (props) => {
                                 },
                             ]}
                         >
-                            <Select>
+                            <Select disabled={isViewProduct}>
                                 {listType && listType.length > 0 &&
                                     listType.map((item, index) => {
                                         return (
@@ -337,6 +353,27 @@ const ModalCreateProduct = (props) => {
                                     })
                                 }
                             </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                        <Form.Item
+
+                            label="Quantity"
+                            name="quantity"
+                            labelCol={{
+                                span: 24,
+                            }}
+                            wrapperCol={{
+                                span: 24,
+                            }}
+                            rules={[
+                                {
+                                    pattern: /^-?\d+$/,
+                                    message: 'Invalid discount format!'
+                                }
+                            ]}
+                        >
+                            <Input disabled={isViewProduct} />
                         </Form.Item>
                     </Col>
                     <Col span={15}>
@@ -378,7 +415,7 @@ const ModalCreateProduct = (props) => {
                                 span: 24,
                             }}
                         >
-                            <TextArea rows={4} />
+                            <TextArea disabled={isViewProduct} rows={4} />
                         </Form.Item>
                     </Col>
                 </Row>
