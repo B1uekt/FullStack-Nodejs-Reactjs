@@ -140,4 +140,31 @@ const deleteProductService = async (productId) => {
         };
     }
 }
-module.exports = { getAllProductService, postProductService, putProductService, deleteProductService };
+
+const getAllProductPaginationService = async (currentPage, pageSize) => {
+    try {
+        const offset = (+currentPage - 1) * pageSize
+        const { count, rows } = await db.Product.findAndCountAll({
+            limit: +pageSize,
+            offset: offset,
+            include: {
+                model: db.Type,
+                attributes: ['name']
+            }
+        });
+        return {
+            result: rows,
+            total: count,
+            EC: 0,
+            EM: 'Success',
+        };
+    }
+    catch (error) {
+        return {
+            EC: 1,
+            EM: 'Failed to fetch products',
+            error: error.message,
+        };
+    }
+}
+module.exports = { getAllProductService, postProductService, putProductService, deleteProductService, getAllProductPaginationService };

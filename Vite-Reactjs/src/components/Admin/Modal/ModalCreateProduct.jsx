@@ -141,7 +141,6 @@ const ModalCreateProduct = (props) => {
         //console.log(id, name, price, isDiscount, +discount, description, type, quantity)
         if (dataProductUpdate && !_.isEmpty(dataProductUpdate)) {
             const res = await putProduct(id, name, price, isDiscount, +discount, description, type, fileList, +quantity)
-            // console.log(res)
             if (res && res.EC === 0) {
                 notification.success({
                     message: "Update Product succeed!",
@@ -153,13 +152,13 @@ const ModalCreateProduct = (props) => {
             else {
                 notification.error({
                     message: "Update Product fail",
-                    description: res.EM,
+                    description: res.error,
                 })
             }
         }
         else {
             const res = await postNewProduct(name, price, isDiscount, +discount, description, type, fileList, +quantity)
-            // console.log(res)
+            console.log(res)
             if (res && res.EC === 0) {
                 notification.success({
                     message: "Create Product succeed!",

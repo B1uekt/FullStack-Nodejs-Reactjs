@@ -1,4 +1,4 @@
-const { getAllProductService, postProductService, putProductService, deleteProductService } = require('../services/productService')
+const { getAllProductService, postProductService, putProductService, deleteProductService, getAllProductPaginationService } = require('../services/productService')
 
 const getAllProduct = async (req, res) => {
     const data = await getAllProductService()
@@ -26,4 +26,11 @@ const deleteProduct = async (req, res) => {
     const data = await deleteProductService(id)
     return res.status(200).json(data)
 }
-module.exports = { getAllProduct, postCreateNewProduct, putUpdateProduct, deleteProduct }
+
+const getProductPagination = async (req, res) => {
+    const { currentPage, pageSize } = req.query
+    // console.log(currentPage, pageSize)
+    const data = await getAllProductPaginationService(currentPage, pageSize)
+    return res.status(200).json(data)
+}
+module.exports = { getAllProduct, postCreateNewProduct, putUpdateProduct, deleteProduct, getProductPagination }

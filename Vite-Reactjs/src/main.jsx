@@ -17,7 +17,7 @@ import AdminPage from './pages/admin.jsx';
 import Product from './components/Admin/product.jsx';
 import './styles/index.scss'
 import BlindBox from './pages/blindboxtoys.jsx';
-
+import 'nprogress/nprogress.css'
 
 const router = createBrowserRouter([
   {
@@ -80,9 +80,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
+
       <StrictMode>
         <RouterProvider router={router} />
       </StrictMode>
+
     </PersistGate>
   </Provider>
 )

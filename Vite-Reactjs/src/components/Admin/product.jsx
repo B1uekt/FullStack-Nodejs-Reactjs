@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PlusCircleFilled } from '@ant-design/icons';
 import ModalCreateProduct from "./Modal/ModalCreateProduct";
-import { getAllProduct } from "../../services/ProductServiecs";
+import { getAllProduct, getProductPagination } from "../../services/ProductServiecs";
 import commonUtil from "../../util/commonUtils";
 import { notification, Space, Table, Tag } from 'antd';
 import ModalDelete from './Modal/ModalDelete';
@@ -17,12 +17,18 @@ const Product = () => {
     const [isViewProduct, setIsViewProduct] = useState(false)
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false)
     const [dataDelete, setDataDelete] = useState({})
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 4,
+        total: 0,
+    });
+
     const showModal = () => {
         setIsModalOpen(true);
     };
     useEffect(() => {
         fetchListProduct();
-    }, [])
+    }, [pagination.current])
 
     const handleEditBtn = (item) => {
         setIsModalOpen(true)
@@ -39,9 +45,15 @@ const Product = () => {
         setDataDelete(item)
     }
     const fetchListProduct = async () => {
-        const res = await getAllProduct();
+        console.log(+pagination.current, +pagination.pageSize, +pagination.total)
+        const res = await getProductPagination(+pagination.current, +pagination.pageSize);
+        setPagination((prev) => ({
+            ...prev,      // Giữ nguyên các thuộc tính hiện tại (current, pageSize)
+            total: res.total,   // Cập nhật giá trị mới cho total
+        }));
         if (res && res.EC === 0 && Array.isArray(res.result)) {
-            console.log(res)
+            // console.log(res)
+            console.log(+pagination.current, +pagination.pageSize, +pagination.total)
             const productsWithBase64 = await Promise.all(
                 res.result.map(async (product) => {
                     const imageBase64 = product.image ? await commonUtil.bufferToBase64(product.image) : null;
@@ -74,6 +86,14 @@ const Product = () => {
         }
     };
 
+    const handleTableChange = (pagination) => {
+        console.log(pagination)
+        setPagination({
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            total: pagination.total,
+        });
+    };
     return (
         <>
             <button onClick={showModal} className='btn-add-new'>{<PlusCircleFilled />}Add</button>
@@ -93,7 +113,12 @@ const Product = () => {
                 setDataDelete={setDataDelete}
                 fetchListProduct={fetchListProduct}
             />
-            <Table className="product-table" pagination={{ defaultCurrent: 1, pageSize: 4, align: "center" }} dataSource={dataProduct} rowKey={(record) => `user_${record.id}`}>
+            <Table className="product-table"
+                pagination={{ defaultCurrent: pagination.current, pageSize: pagination.pageSize, total: pagination.total, align: "center" }}
+                dataSource={dataProduct}
+                rowKey={(record) => `user_${record.id}`}
+                onChange={handleTableChange}>
+
                 <Column
                     title="Image"
                     key="image"
@@ -106,7 +131,7 @@ const Product = () => {
                     )}
                 />
                 <Column className="product-name" title="Name" dataIndex="name" key="name" />
-                {previewImage && (
+                {/* {previewImage && (
                     <Image
                         wrapperStyle={{
                             display: 'none',
@@ -118,7 +143,7 @@ const Product = () => {
                         }}
                         src={previewImage}
                     />
-                )}
+                )} */}
                 <Column title="Price" dataIndex="price" key="price" />
                 <Column title="Discount" dataIndex="discount_percent" key="lastName" />
                 <Column title="Quantity" dataIndex="quantity" key="quantity" />
@@ -153,7 +178,7 @@ const Product = () => {
                         </Space>
                     )}
                 />
-            </Table>
+            </Table >
         </>
     )
 }

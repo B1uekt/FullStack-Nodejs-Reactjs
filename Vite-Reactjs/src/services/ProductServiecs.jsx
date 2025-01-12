@@ -26,7 +26,8 @@ const postNewProduct = (name, price, isDiscountValue, discount, description, typ
     })
 }
 const putProduct = (id, name, price, isDiscountValue, discount, description, type, fileList, quantity) => {
-    console.log(quantity)
+    // console.log(quantity)
+    // console.log(id, name, price, isDiscountValue, discount, description, type, fileList, quantity)
     const data = new FormData();
     data.append('id', id);
     data.append('name', name);
@@ -41,7 +42,6 @@ const putProduct = (id, name, price, isDiscountValue, discount, description, typ
             data.append('images', file.originFileObj);
         }
     });
-
     return axios.put("/v1/api/updateProduct", data, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -54,4 +54,7 @@ const deleteProduct = (productId) => {
     return axios.delete("v1/api/deleteProduct", { data: { id: productId } })
 }
 
-export { getAllProduct, postNewProduct, putProduct, deleteProduct }
+const getProductPagination = (currentPage, pageSize) => {
+    return axios.get(`v1/api/collection/pagination?currentPage=${currentPage}&pageSize=${pageSize}`)
+}
+export { getAllProduct, postNewProduct, putProduct, deleteProduct, getProductPagination }
